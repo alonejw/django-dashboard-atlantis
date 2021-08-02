@@ -15,6 +15,7 @@ Circles.create({
 	styleText:    true
 })
 
+/* Notificação da pagina principal
 //Notify
 $.notify({
 	icon: 'flaticon-alarm-1',
@@ -28,6 +29,7 @@ $.notify({
 	},
 	time: 1000,
 });
+*/
 
 // JQVmap
 $('#map-example').vectorMap(

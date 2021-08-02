@@ -1,0 +1,736 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Famílias {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+    <link rel="stylesheet" href="/static/cssPersonalizados/select2-checkbox-modal.css">
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="content">
+        <div class="page-inner">
+            <div class="page-header">
+                <h4 class="page-title">Famílias</h4>
+                <ul class="breadcrumbs">
+                    <li class="nav-home">
+                        <a href="#">
+                            <i class="flaticon-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#">Cadastros</a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#">Famílias</a>
+                    </li>
+                </ul>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h4 class="card-title">Famílias</h4>
+
+                                <button type="button" class="btn btn-primary" onclick="abrirModalCadastro()">
+                                    Cadastrar
+                                </button>
+                            </div>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="familias" class="display table table-striped table-hover" style="width:100%">
+                                    <thead>
+                                    <tr>
+                                        <th>id</th>
+                                        <th style="text-align: center">CPF</th>
+                                        <th>Nome</th>
+                                        <th>Data Nascimento</th>
+                                        <th>Telefone</th>
+                                        <th>Gênero</th>
+                                        <th>Técnico Responsável</th>
+                                        <th style="text-align: center">Ações</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="modalCadastra" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h5 class="modal-title w-100" id="exampleModalLongTitle">Nova Família</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="formCadastra" method="post">
+                        {% csrf_token %}
+                        <h4 class="text-center">Identificação</h4>
+                        <div class="row mb-3">
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">CPF</label>
+                                <input type="text" class="form-control" id="cpf" name="cpf" placeholder="CPF"
+                                       required>
+                            </div>
+                            <div class="col-md-8 col-sm-8">
+                                <label for="exampleInputEmail1">Nome</label>
+                                <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome"
+                                       required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">Data Nascimento</label>
+                                <input type="date" class="form-control" id="dataNascimento" name="dataNascimento"
+                                       placeholder="Data Nascimento" required>
+                            </div>
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">Gênero</label>
+                                <select class="js-example-basic-single" name="sexo" id="sexo"
+                                        style="width: 100%; height: 25px">
+                                    <option></option>
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Feminino">Feminino</option>
+                                    <option value="Outro">Outro</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">Telefone</label>
+                                <input type="text" class="form-control" id="telefone" name="telefone"
+                                       placeholder="Telefone" required>
+                            </div>
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">Grupo Social</label>
+                                <select class="js-example-basic-single" name="grupoSocial" id="grupoSocial"
+                                        style="width: 100%; height: 25px">
+                                    <option></option>
+                                    <option value="Agricultor Familiar">Agricultor Familiar</option>
+                                    <option value="Quilombola">Quilombola</option>
+                                    <option value="Indígena">Indígena</option>
+                                    <option value="Outro">Outro</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">Escolaridade</label>
+                                <select class="js-example-basic-single" name="escolaridade" id="escolaridade"
+                                        style="width: 100%; height: 25px">
+                                    <option></option>
+                                    <option value="Fundamental Incompleto">Fundamental Incompleto</option>
+                                    <option value="Fundamental Completo">Fundamental Completo</option>
+                                    <option value="Médio Incompleto">Médio Incompleto</option>
+                                    <option value="Médio Completo">Médio Completo</option>
+                                    <option value="Superior Incompleto">Superior Incompleto</option>
+                                    <option value="Superior Completo">Superior Completo</option>
+                                    <option value="Outro">Outro</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <hr/>
+
+                        <h4 class="text-center">Informações do Imóvel</h4>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">UF</label>
+                                <select class="js-example-basic-single" name="uf" id="uf"
+                                        style="width: 100%; height: 25px" onchange="mudaEstado()">
+                                    <option></option>
+                                    <option value="AC">Acre</option>
+                                    <option value="AL">Alagoas</option>
+                                    <option value="AP">Amapá</option>
+                                    <option value="AM">Amazonas</option>
+                                    <option value="BA">Bahia</option>
+                                    <option value="CE">Ceará</option>
+                                    <option value="DF">Distrito Federal</option>
+                                    <option value="ES">Espírito Santo</option>
+                                    <option value="GO">Goiás</option>
+                                    <option value="MA">Maranhão</option>
+                                    <option value="MT">Mato Grosso</option>
+                                    <option value="MS">Mato Grosso do Sul</option>
+                                    <option value="MG">Minas Gerais</option>
+                                    <option value="PA">Pará</option>
+                                    <option value="PB">Paraíba</option>
+                                    <option value="PR">Paraná</option>
+                                    <option value="PE">Pernambuco</option>
+                                    <option value="PI">Piauí</option>
+                                    <option value="RJ">Rio de Janeiro</option>
+                                    <option value="RN">Rio Grande do Norte</option>
+                                    <option value="RS">Rio Grande do Sul</option>
+                                    <option value="RO">Rondônia</option>
+                                    <option value="RR">Roraima</option>
+                                    <option value="SC">Santa Catarina</option>
+                                    <option value="SP">São Paulo</option>
+                                    <option value="SE">Sergipe</option>
+                                    <option value="TO">Tocantins</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">Município</label>
+                                <select class="js-example-basic-single" name="municipio" id="municipio"
+                                        style="width: 100%; height: 25px">
+                                    <option></option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">Área Total do Imóvel(ha)</label>
+                                <input type="number" class="form-control" id="areaTotalImovel"
+                                       name="areaTotalImovel" placeholder="Área Total do Imóvel(ha)" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">Área Própria</label>
+                                <select class="js-example-basic-single" name="areaPropria" id="areaPropria"
+                                        style="width: 100%; height: 25px">
+                                    <option></option>
+                                    <option value="Sim">Sim</option>
+                                    <option value="Não">Não</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">Zona de Moradia</label>
+                                <select class="js-example-basic-single" name="zonaMoradia" id="zonaMoradia"
+                                        style="width: 100%; height: 25px">
+                                    <option></option>
+                                    <option value="Assentado">Assentado</option>
+                                    <option value="Capital do Estado">Capital do Estado</option>
+                                    <option value="Comunidade Rural">Comunidade Rural</option>
+                                    <option value="Distrito/Povoado">Distrito/Povoado</option>
+                                    <option value="Sede do Município">Sede do Município</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">Forma de Acesso à Água</label>
+                                <div class="funkyradio">
+                                    <div class="funkyradio-success">
+                                        <input type="checkbox" name="checkbox" id="rioChecked"/>
+                                        <label for="rioChecked">Rio</label>
+                                    </div>
+                                    <div class="funkyradio-success">
+                                        <input type="checkbox" name="checkbox" id="acudeChecked"/>
+                                        <label for="acudeChecked">Açude</label>
+                                    </div>
+                                    <div class="funkyradio-success">
+                                        <input type="checkbox" name="checkbox" id="pocoChecked"/>
+                                        <label for="pocoChecked">Poço</label>
+                                    </div>
+                                    <div class="funkyradio-success">
+                                        <input type="checkbox" name="checkbox" id="cisternaChecked"/>
+                                        <label for="cisternaChecked">Cisterna</label>
+                                    </div>
+                                    <div class="funkyradio-success">
+                                        <input type="checkbox" name="checkbox" id="outrasFormasChecked"/>
+                                        <label for="outrasFormasChecked">Outras Formas</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr/>
+
+                        <h4 class="text-center">Atividades Produtivas</h4>
+
+                        <div class="row">
+                            <div class="col-md-5 col-sm-5">
+                                <h4>Atividade</h4>
+                                <div class="funkyradio">
+                                    <div class="funkyradio-success">
+                                        <input type="checkbox" name="checkbox" id="agriculturaChecked"/>
+                                        <label for="agriculturaChecked">Agricultura</label>
+                                    </div>
+                                    <div class="funkyradio-success">
+                                        <input type="checkbox" name="checkbox" id="pecuariaChecked"/>
+                                        <label for="pecuaria">Pecuária</label>
+                                    </div>
+                                    <div class="funkyradio-success">
+                                        <input type="checkbox" name="checkbox" id="outrosAtividadesChecked"/>
+                                        <label for="outrosAtividadesChecked">outros</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-7 col-sm-7 ">
+                                <label for="exampleInputEmail1">Principais Produtos</label>
+                                <textarea class="form-control" id="produto" name="produto" placeholder="Produtos"
+                                          required></textarea>
+                            </div>
+
+                        </div>
+
+
+                        <hr/>
+
+                        <h4 class="text-center">Comercialização da Produção</h4>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4>Comercialização da Produção</h4>
+                                <div class="funkyradio">
+                                    <div class="funkyradio-success">
+                                        <input type="checkbox" name="checkbox" id="comercioLocal"/>
+                                        <label for="comercioLocal">Comércio Local</label>
+                                    </div>
+                                    <div class="funkyradio-success">
+                                        <input type="checkbox" name="checkbox" id="cooperativa"/>
+                                        <label for="cooperativa">Cooperativa</label>
+                                    </div>
+                                    <div class="funkyradio-success">
+                                        <input type="checkbox" name="checkbox" id="feiras"/>
+                                        <label for="feiras">Feiras</label>
+                                    </div>
+                                    <div class="funkyradio-success">
+                                        <input type="checkbox" name="checkbox" id="diretaConsumidores"/>
+                                        <label for="diretaConsumidores">Direta aos Consumidores</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr/>
+
+                        <h4 class="text-center">Estimativa de Renda Anual</h4>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">Renda</label>
+                                <select class="js-example-basic-single" name="renda" id="renda"
+                                        style="width: 100%; height: 25px">
+                                    <option></option>
+                                    <option value="Sem Renda">Sem Renda</option>
+                                    <option value="Menos de R$ 10.500">Menos de R$ 10.500</option>
+                                    <option value="Mais de R$ 10.500 a R$ 28.000">Mais de R$ 10.500 a R$ 28.000
+                                    </option>
+                                    <option value="Mais de R$ 28.000 a R$ 52.500">Mais de R$ 28.000 a R$ 52.500
+                                    </option>
+                                    <option value="Mais de R$ 52.500 a R$ 96.250">Mais de R$ 52.500 a R$ 96.250
+                                    </option>
+                                    <option value="Mais de R$ 96.250">Mais de R$ 96.250</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <div id="msgCadastra" class="col-md-3"></div>
+                        </div>
+
+                        <hr/>
+                        <div id="mostraMembro" style="display:none">
+                            <div id="msgMembroCadastroFamilia"></div>
+                            <h5 class="text-center">Membros da Família</h5>
+
+
+                            <div id="msgMembroCadastroFamilia"></div>
+
+                            <div class="text-right" style="margin-top:15px;">
+                                <a class="btn btn-success" href="#" style="margin-bottom:25px"
+                                   onclick="modalCadastroMembro('tabelaMembrosModalCadastro');"> Adicionar
+                                    Membro </a>
+                            </div>
+
+                            <table id="tabelaMembrosModalCadastro" class="table table-bordered table-striped"
+                                   style="width:100%">
+                                <thead>
+                                <tr>
+                                    <th>id</th>
+                                    <th>CPF</th>
+                                    <th>Nome</th>
+                                    <th>Data de Nascimento</th>
+                                    <th>Grau de parentesco</th>
+                                    <th style="width: 15%; text-align: center">Ações</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <hr/>
+
+                        <input type="hidden" value="{{ request.user.id }}" class="form-control" id="tecnico"
+                               name="tecnico" placeholder="Técnico" required>
+
+                        <input type="hidden" value="{{ request.user.id }}" class="form-control" id="tecnico"
+                               name="tecnico" aria-describedby="emailHelp" placeholder="Técnico" required>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                            <button type="submit" class="btn btn-primary">Cadastrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade modal-altera-familia" role="dialog">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Altera Família</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="modalCarregandoMembro" id="modalCarregandoMembro"></div>
+                    <div class="modalCarregando" id="modalCarregando"></div>
+                    <form id="formAltera" method="post">
+                        {% csrf_token %}
+                        <h5 class="text-center">Identificação</h5>
+                        <div class="row mb-3">
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">CPF</label>
+                                <input type="text" class="form-control" id="cpfAltera" name="cpfAltera"
+                                       placeholder="CPF" required disabled>
+                            </div>
+                            <div class="col-md-8 col-sm-8">
+                                <label for="exampleInputEmail1">Nome</label>
+                                <input type="text" class="form-control" id="nomeAltera" name="nomeAltera"
+                                       placeholder="Nome" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">Data Nascimento</label>
+                                <input type="date" class="form-control" id="dataNascimentoAltera"
+                                       name="dataNascimentoAltera" placeholder="Data Nascimento" required>
+                            </div>
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">Gênero</label>
+                                <select class="js-example-basic-single" name="sexoAltera" id="sexoAltera"
+                                        style="width: 100%; height: 25px">
+                                    <option></option>
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Feminino">Feminino</option>
+                                    <option value="Outro">Outro</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">Telefone</label>
+                                <input type="text" class="form-control" id="telefoneAltera" name="telefoneAltera"
+                                       placeholder="Telefone" required>
+                            </div>
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">Grupo Social</label>
+                                <select class="js-example-basic-single" name="grupoSocialAltera" id="grupoSocialAltera"
+                                        style="width: 100%; height: 25px">
+                                    <option></option>
+                                    <option value="Agricultor Familiar">Agricultor Familiar</option>
+                                    <option value="Quilombola">Quilombola</option>
+                                    <option value="Indígena">Indígena</option>
+                                    <option value="Outro">Outro</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">Escolaridade</label>
+                                <select class="js-example-basic-single" name="escolaridadeAltera"
+                                        id="escolaridadeAltera" style="width: 100%; height: 25px">
+                                    <option></option>
+                                    <option value="Fundamental Incompleto">Fundamental Incompleto</option>
+                                    <option value="Fundamental Completo">Fundamental Completo</option>
+                                    <option value="Médio Incompleto">Médio Incompleto</option>
+                                    <option value="Médio Completo">Médio Completo</option>
+                                    <option value="Superior Incompleto">Superior Incompleto</option>
+                                    <option value="Superior Completo">Superior Completo</option>
+                                    <option value="Outro">Outro</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <hr/>
+
+                        <h5 class="text-center">Informações do Imóvel</h5>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">UF</label>
+                                <select class="js-example-basic-single" name="ufAltera" id="ufAltera"
+                                        style="width: 100%; height: 25px" onchange="mudaEstadoAltera()">
+                                    <option></option>
+                                    <option value="AC">Acre</option>
+                                    <option value="AL">Alagoas</option>
+                                    <option value="AP">Amapá</option>
+                                    <option value="AM">Amazonas</option>
+                                    <option value="BA">Bahia</option>
+                                    <option value="CE">Ceará</option>
+                                    <option value="DF">Distrito Federal</option>
+                                    <option value="ES">Espírito Santo</option>
+                                    <option value="GO">Goiás</option>
+                                    <option value="MA">Maranhão</option>
+                                    <option value="MT">Mato Grosso</option>
+                                    <option value="MS">Mato Grosso do Sul</option>
+                                    <option value="MG">Minas Gerais</option>
+                                    <option value="PA">Pará</option>
+                                    <option value="PB">Paraíba</option>
+                                    <option value="PR">Paraná</option>
+                                    <option value="PE">Pernambuco</option>
+                                    <option value="PI">Piauí</option>
+                                    <option value="RJ">Rio de Janeiro</option>
+                                    <option value="RN">Rio Grande do Norte</option>
+                                    <option value="RS">Rio Grande do Sul</option>
+                                    <option value="RO">Rondônia</option>
+                                    <option value="RR">Roraima</option>
+                                    <option value="SC">Santa Catarina</option>
+                                    <option value="SP">São Paulo</option>
+                                    <option value="SE">Sergipe</option>
+                                    <option value="TO">Tocantins</option>
+                                </select>
+
+                            </div>
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">Município</label>
+                                <select class="js-example-basic-single" name="municipioAltera" id="municipioAltera"
+                                        style="width: 100%; height: 25px">
+                                    <option></option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">Área Total do Imóvel(ha)</label>
+                                <input type="number" class="form-control" id="areaTotalImovelAltera"
+                                       name="areaTotalImovelAltera" placeholder="Área Total do Imóvel(ha)" required>
+                            </div>
+                        </div>
+
+
+                        <div class="row mb-3">
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">Área Própria</label>
+                                <select class="js-example-basic-single" name="areaPropriaAltera" id="areaPropriaAltera"
+                                        style="width: 100%; height: 25px">
+                                    <option></option>
+                                    <option value="Sim">Sim</option>
+                                    <option value="Não">Não</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">Zona de Moradia</label>
+                                <select class="js-example-basic-single" name="zonaMoradiaAltera" id="zonaMoradiaAltera"
+                                        style="width: 100%; height: 25px">
+                                    <option></option>
+                                    <option value="Assentado">Assentado</option>
+                                    <option value="Capital do Estado">Capital do Estado</option>
+                                    <option value="Comunidade Rural">Comunidade Rural</option>
+                                    <option value="Distrito/Povoado">Distrito/Povoado</option>
+                                    <option value="Sede do Município">Sede do Município</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">Forma de Acesso à Água</label>
+
+
+                                <div class="funkyradio">
+                                    <div class="funkyradio-success">
+                                        <input type="checkbox" name="checkbox" id="rioCheckedAltera"/>
+                                        <label for="rioCheckedAltera">Rio</label>
+                                    </div>
+                                    <div class="funkyradio-success">
+                                        <input type="checkbox" name="checkbox" id="acudeCheckedAltera"/>
+                                        <label for="acudeCheckedAltera">Açude</label>
+                                    </div>
+                                    <div class="funkyradio-success">
+                                        <input type="checkbox" name="checkbox" id="pocoCheckedAltera"/>
+                                        <label for="pocoCheckedAltera">Poço</label>
+                                    </div>
+                                    <div class="funkyradio-success">
+                                        <input type="checkbox" name="checkbox" id="cisternaCheckedAltera"/>
+                                        <label for="cisternaCheckedAltera">Cisterna</label>
+                                    </div>
+                                    <div class="funkyradio-success">
+                                        <input type="checkbox" name="checkbox" id="outrasFormasCheckedAltera"/>
+                                        <label for="outrasFormasCheckedAltera">Outras Formas</label>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <hr/>
+
+                        <h5 class="text-center">Atividades Produtivas</h5>
+
+                        <div class="row">
+                            <div class="col-md-5 col-sm-5">
+                                <h4>Atividade</h4>
+                                <div class="funkyradio">
+                                    <div class="funkyradio-success">
+                                        <input type="checkbox" name="checkbox" id="agriculturaCheckedAltera"/>
+                                        <label for="agriculturaCheckedAltera">Agricultura</label>
+                                    </div>
+                                    <div class="funkyradio-success">
+                                        <input type="checkbox" name="checkbox" id="pecuariaCheckedAltera"/>
+                                        <label for="pecuariaCheckedAltera">Pecuária</label>
+                                    </div>
+                                    <div class="funkyradio-success">
+                                        <input type="checkbox" name="checkbox" id="outrosAtividadesCheckedAltera"/>
+                                        <label for="outrosAtividadesCheckedAltera">outros</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-7 col-sm-7 ">
+                                <label for="exampleInputEmail1">Principais Produtos</label>
+                                <textarea class="form-control" id="produtoAltera" name="produtoAltera"
+                                          placeholder="Produtos"
+                                          required></textarea>
+                            </div>
+                        </div>
+
+                        <hr/>
+
+                        <h5 class="text-center">Comercialização da Produção</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4>Comercialização da Produção</h4>
+                                <div class="funkyradio">
+                                    <div class="funkyradio-success">
+                                        <input type="checkbox" name="checkbox" id="comercioLocalAltera"/>
+                                        <label for="comercioLocalAltera">Comércio Local</label>
+                                    </div>
+                                    <div class="funkyradio-success">
+                                        <input type="checkbox" name="checkbox" id="cooperativaAltera"/>
+                                        <label for="cooperativaAltera">Cooperativa</label>
+                                    </div>
+                                    <div class="funkyradio-success">
+                                        <input type="checkbox" name="checkbox" id="feirasAltera"/>
+                                        <label for="feirasAltera">Feiras</label>
+                                    </div>
+                                    <div class="funkyradio-success">
+                                        <input type="checkbox" name="checkbox" id="diretaConsumidoresAltera"/>
+                                        <label for="diretaConsumidoresAltera">Direta aos Consumidores</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr/>
+
+                        <h5 class="text-center">Estimativa de Renda Anual</h5>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4 col-sm-4">
+                                <label for="exampleInputEmail1">Renda</label>
+                                <select class="js-example-basic-single" name="rendaAltera" id="rendaAltera"
+                                        style="width: 100%; height: 25px">
+                                    <option></option>
+                                    <option value="Sem Renda">Sem Renda</option>
+                                    <option value="Menos de R$ 10.500">Menos de R$ 10.500</option>
+                                    <option value="Mais de R$ 10.500 a R$ 28.000">Mais de R$ 10.500 a R$ 28.000</option>
+                                    <option value="Mais de R$ 28.000 a R$ 52.500">Mais de R$ 28.000 a R$ 52.500</option>
+                                    <option value="Mais de R$ 52.500 a R$ 96.250">Mais de R$ 52.500 a R$ 96.250</option>
+                                    <option value="Mais de R$ 96.250">Mais de R$ 96.250</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <hr/>
+                        <div id="msgMembro"></div>
+                        <h5 class="text-center">Membros da Família</h5>
+
+                        <div class="text-right" style="margin-top:15px;">
+                            <a class="btn btn-success" href="#" style="margin-bottom:25px"
+                               onclick="modalCadastroMembro('tabelaMembros');"> Adicionar Membro </a>
+                        </div>
+
+                        <table id="tabelaMembros" class="table table-bordered table-striped" style="width:100%">
+                            <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>CPF</th>
+                                <th>Nome</th>
+                                <th>Data de Nascimento</th>
+                                <th>Grau de parentesco</th>
+                                <th style="width: 15%; text-align: center">Ações</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+                            </tbody>
+                        </table>
+
+                        <hr/>
+
+                        <input type="hidden" value="{{ request.user.id }}" class="form-control" id="tecnico"
+                               name="tecnico" placeholder="Técnico" required>
+
+                        <input type="hidden" value="{{ request.user.id }}" class="form-control" id="tecnicoAltera"
+                               name="tecnicoAltera" aria-describedby="emailHelp" placeholder="Técnico" required>
+                        <input type="hidden" class="form-control" id="tecnicoAlterando" name="tecnicoAlterando"
+                               aria-describedby="emailHelp" placeholder="Técnico" required>
+                        <input type="hidden" class="form-control" id="latitudeAltera" name="latitudeAltera"
+                               aria-describedby="emailHelp" placeholder="Latitude" required>
+                        <input type="hidden" class="form-control" id="longitudeAltera" name="longitudeAltera"
+                               aria-describedby="emailHelp" placeholder="Longitude" required>
+                        <input type="hidden" class="form-control" id="idAltera" name="idAltera"
+                               aria-describedby="emailHelp" placeholder="Id" required>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Alterar</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Sair</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+    <!-- Atlantis DEMO methods, don't include it in your project! -->
+    <script src="/static/assets/js/setting-demo2.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script type="text/javascript" language="javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script type="text/javascript" language="javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.min.js"></script>
+
+    <script src="/static/jspersonalizados/modal-select2.js"></script>
+    <script src="/static/jspersonalizados/tabelas.js"></script>
+    <script src="/static/jspersonalizados/crudFamilia.js"></script>
+    <script src="/static/jspersonalizados/mudaMunicipio.js"></script>
+    <script src="/static/jspersonalizados/notificacoesCarregamentos.js"></script>
+
+{% endblock javascripts %}
